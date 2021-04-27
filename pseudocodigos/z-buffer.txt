@@ -4,9 +4,12 @@ registro Pixel { int x, int y, int z, Cor cor }
 registro Poligono { Pixel[] pixels }
 registro Imagem { Poligono[] poligonos }
 
-// variaveis globais
-Buffer = Matriz[LARGURA][ALTURA] de Cor
-ZBuffer = Matriz[LARGURA][ALTURA] de Inteiro
+// constantes / variaveis globais
+LARGURA = 1920
+ALTURA = 1080
+COR_DE_FUNDO = rgb(127,127,127) // cinza
+Buffer = Matriz[LARGURA][ALTURA] de Cor      // buffer de cor
+ZBuffer = Matriz[LARGURA][ALTURA] de Inteiro // buffer de profundidade
 
 procedimento ZBuffer
 
