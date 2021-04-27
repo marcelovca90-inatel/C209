@@ -1,0 +1,52 @@
+// tipos das estruturas de dados
+registro Cor { int r, int g, int b }
+registro Pixel { int x, int y, int z, Cor cor }
+registro Poligono { Pixel[] pixels }
+registro Imagem { Poligono[] poligonos }
+
+funcao Imagem[] Divide(Imagem imagem)
+    
+    //   H +--------+--------+
+    //     |        |        |
+    //     |   Q3   |   Q4   |
+    //     |        |        |
+    // H/2 +--------+--------+
+    //     |        |        |
+    //     |   Q1   |   Q2   |
+    //     |        |        |
+    //   0 +--------+--------+
+    //     0       W/2       W
+
+    W = imagem.Largura
+    H = imagem.Altura
+    imagens = Imagem[4]
+    imagens[0] = imagem.subimagem(0, W/2, 0, H/2)) // quadrante 1 (Q1)
+    imagens[1] = imagem.subimagem(W/2, W, 0, H/2)) // quadrante 2 (Q2)
+    imagens[2] = imagem.subimagem(0, W/2, H/2, H)) // quadrante 3 (Q3)
+    imagens[3] = imagem.subimagem(W/2, W, H/2, H)) // quadrante 4 (Q4)
+
+    retorna imagens
+
+fim_funcao
+
+procedimento Warnock(Imagem imagemOriginal)
+
+    imagens = Lista de Imagem
+    imagens.inserir(imagemOriginal)
+
+    para cada imagem em imagens
+        se (um polígono cobre a região totalmente e está na frente)
+            pintar(imagem) // pinta a região da cor do polígono
+        senão se (nenhum polígono a intercepta)
+            pintar(imagem) // pinta a região da cor de fundo
+        senão se (apenas um polígono a intercepta)
+            pintar(imagem) // pinta a região (de dentro) da cor do polígono
+        senão
+            se (imagem.Largura > 1 e imagem.Altura > 1)
+                imagens.inserirTodos(divide(imagem))
+            senão
+                pintar(imagem) // trata-se de um único pixel
+                // pintar o polígono com menor profundidade
+        imagens.remove(imagem)
+
+fim_procedimento
