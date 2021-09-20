@@ -37,11 +37,8 @@ procedimento ABuffer
         para cada Pixel pix em Poligono.pixels
             se (pix é completamente coberto por pol e pol é opaco) então
                 RemoverPixelsAtrasDe(pix)
-                Buffer[x][y].inserir(pix.cor)
-                ZBuffer[x][y].inserir(pix.z)
-            senão
-                Buffer[x][y].inserir(pix.cor)
-                ZBuffer[x][y].inserir(pix.z)
+            Buffer[x][y].inserir(pix.cor)
+            ZBuffer[x][y].inserir(pix.z)
 
     // desenha a imagem
     para x de 0 até LARGURA
