@@ -38,19 +38,18 @@ procedimento Warnock(Imagem imagemOriginal)
         regiao = imagens.frente // pega a primeira imagem da lista
 
         se (um polígono cobre a região totalmente e está na frente)
-            pintar(regiao) // pinta a região da cor do polígono
+            pintar(regiao,corDoPoligono) // pinta a região da cor do polígono
         senão se (nenhum polígono intercepta a região)
-            pintar(regiao) // pinta a região da cor de fundo
+            pintar(regiao,corDeFundo) // pinta a região da cor de fundo
         senão se (apenas um polígono a intercepta)
-            pintar(regiao) // pinta a região interna da cor do
-                           // polígono e ao redor da cor de fundo
+            pintar(parteExterna(regiao),corDeFundo)    // pinta a região interna da cor de fundo
+            pintar(parteInterna(regiao),corDoPoligono) // pinta o interior da regioao da cor do polígono
         senão
-            se (regiao.Largura > 1 e regiao.Altura > 1)
-                novasRegioes = divide(regiao)
+            se (regiao.Largura > 1 e regiao.Altura > 1) // ainda posso dividir
+                novasRegioes = Divide(regiao)
                 imagens.inserirTodos(novasRegioes)
-            senão
-                pintar(regiao) // trata-se de um único pixel
-                // pintar o polígono com menor profundidade
+            senão // trata-se de um único pixel
+                pintar(regiao,corDoPoligonoMaisRaso) // pintar o polígono com menor profundidade
 
         imagens.remove(regiao)
 
