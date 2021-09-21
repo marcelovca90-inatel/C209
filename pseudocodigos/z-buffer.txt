@@ -1,17 +1,17 @@
 // tipos das estruturas de dados
 registro Cor { int r, int g, int b }
 registro Pixel { int x, int y, int z, Cor cor }
-registro Poligono { Pixel[] pixels }
+registro Poligono { Pixel[] pixels }         // já foram rasterizados
 registro Imagem { Poligono[] poligonos }
 
 // constantes / variaveis globais
 LARGURA = 1920
 ALTURA = 1080
-COR_DE_FUNDO = rgb(127,127,127) // cinza
+COR_DE_FUNDO = Cor(r=127,g=127,b=127)        // cinza "médio"
 Buffer = Matriz[LARGURA][ALTURA] de Cor      // buffer de cor
 ZBuffer = Matriz[LARGURA][ALTURA] de Inteiro // buffer de profundidade
 
-procedimento ZBuffer
+procedimento ZBuffer(Imagem img)
 
     // inicializa os buffers de cor e profundidade
     para x de 0 até LARGURA
@@ -20,15 +20,16 @@ procedimento ZBuffer
             ZBuffer[x][y] = +INFINITO
 
     // constroi a imagem
-    para cada Poligono pol em Imagem.poligonos
+    para cada Poligono pol em img.poligonos
         para cada Pixel pix em pol.pixels
             se pix.z < ZBuffer[pix.x][pix.y] então
-                Buffer[pix.x][pix.y] = pix.cor
-                ZBuffer[pix.x][pix.y] = pix.z
+                Buffer[pix.x][pix.y] = pix.cor // atualiza buffer de cor
+                ZBuffer[pix.x][pix.y] = pix.z  // atualiza buffer de profundidade
 
     // desenha a imagem
     para x de 0 até LARGURA
         para y de 0 até ALTURA
-            pintar(x, y, Buffer[x][y])
+            pintar(x, y, Buffer[x][y]) // pinta a posição (x,y) da tela com a cor
+                                       // presente no buffer de cor nesta posição
 
 fim_procedimento

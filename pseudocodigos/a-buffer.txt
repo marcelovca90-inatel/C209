@@ -1,20 +1,21 @@
 // tipos das estruturas de dados
-registro Cor { int r, int g, int b, int a }
+registro Cor { int r, int g, int b, int a }  // com alpha (transparência/opacidade)
 registro Pixel { int x, int y, int z, Cor cor }
-registro Poligono { Pixel[] pixels }
+registro Poligono { Pixel[] pixels }         // já foram rasterizados
 registro Imagem { Poligono[] poligonos }
 
 // constantes / variaveis globais
 LARGURA = 1920
 ALTURA = 1080
-COR_DE_FUNDO = rgb(127,127,127) // cinza
+COR_DE_FUNDO = Cor(r=127,g=127,b=127)                 // cinza "médio"
 Buffer = Matriz[LARGURA][ALTURA] de Lista de Cor      // buffer de cor
 ZBuffer = Matriz[LARGURA][ALTURA] de Lista de Inteiro // buffer de profundidade
 
 procedimento RemoverPixelsAtrasDe(Pixel pix)
 
-    // os pixels da lista que estiverem atras do pixel
-    // passado como parametro deverao ser removidos
+    // os pixels da lista que estiverem atras do pixel passado
+    // como parametro deverao ser removidos tanto do buffer de
+    // cor quanto do de profundidade, pois nao sao visiveis
     para i de 0 até ZBuffer[pix.x][pix.y].tamanho()
         // pixel sera sobreposto pelo poligono opaco
         // e consequentemente nao estará mais visível
@@ -24,7 +25,7 @@ procedimento RemoverPixelsAtrasDe(Pixel pix)
 
 fim_procedimento
 
-procedimento ABuffer
+procedimento ABuffer(Imagem img)
 
     // inicializa os buffers de cor e profundidade
     para x de 0 até LARGURA
@@ -33,12 +34,12 @@ procedimento ABuffer
             ZBuffer[x][y].inserir(+INFINITO)
 
     // desenha os poligonos
-    para cada Poligono pol em Imagem.poligonos
-        para cada Pixel pix em Poligono.pixels
+    para cada Poligono pol em img.poligonos
+        para cada Pixel pix em pol.pixels
             se (pix é completamente coberto por pol e pol é opaco) então
                 RemoverPixelsAtrasDe(pix)
-            Buffer[x][y].inserir(pix.cor)
-            ZBuffer[x][y].inserir(pix.z)
+            Buffer[x][y].inserir(pix.cor) // insere no buffer de cor
+            ZBuffer[x][y].inserir(pix.z)  // insere no buffer de profundidade
 
     // desenha a imagem
     para x de 0 até LARGURA
